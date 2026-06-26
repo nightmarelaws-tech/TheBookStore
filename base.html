@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Basic meta tags for seo(helps google find the site) and responsiveness -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name ="description" content="Justicore-Legal task management for law firms">
+    <meta name="author" content ="Justicore Team">
+    <meta name="theme-color" content="#1a27744">
+    
+    <title>JustiCore</title>
+    <!-- Favicon - appears in browser tab next to title -->
+    <link rel="icon" type="image/png" href="assets/images/logo.png">
+
+    <!-- Bootstrap 5 CSS - provides grid system, buttons, navigation -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons - icon font library for moon, calendar, people icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    
+    <!-- Custom styles - overrides Bootstrap -->
+    <link rel="stylesheet" href="css/style.css">
+     <!-- jQuery - needed for DOM manipulation and API calls -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+
+    <!-- Bootstrap JS - enables menus, dropdowns, and interactive components -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
+
+    <!-- Main JS - will handle dark mode, activity feed, and quote API -->
+    <script src="js/main.js" defer></script>
+
+</head>
+
+<body>
+    <!--Navigation Bar-->
+    <!-- Sticky top navbar with logo, page links, and dark mode toggle -->
+<nav class="navbar navbar-expand-lg sticky-top" id="mainNavbar" aria-label="Main navigation">
+    <div class="container">
+    <!--brand/logo-->    
+    <a class="navbar-brand" href="index.html" aria-label="JustiCore Home">
+        <img src="assets/images/logo.png"
+                alt="Justicore logo"
+                    height="45"
+                    class="navbar-logo me-2">
+        <span>JustiCore</span>
+    </a>
+    <!--Menu Button -->
+      <button class="navbar-toggler"
+        type="button" 
+        data-bs-toggle="collapse" 
+        data-bs-target="#navbarMenu"
+        aria-controls="navbarMenu"
+        aria-expanded="false" 
+        aria-label="Toggle navigation menu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <!--Navigation Links-->
+      <div class="collapse navbar-collapse" id="navbarMenu">
+            <ul class="navbar-nav ms-auto align-items-center gap-2" role="list">
+                <li class="nav-item">
+                    <a class="nav-link active" href="index.html" aria-current="page">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="tasks.html">Tasks</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="about.html">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="contact.html">Contact</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="analytics.html">Analytics</a>
+                </li>
+
+                <!-- Dark mode toggle button - icon changes between moon and sun -->
+                <li class="nav-item">
+                    <button class="btn btn-sm" id="darkModeToggle" aria-label="Toggle dark mode">
+                        <i class="bi bi-moon-fill"></i>
+                    </button>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+</nav>
+<!--headline and description-->
+
+
+<!-- Footer Section -->
+<footer class="py-4" id="mainFooter" role="contentinfo">
+    <div class="container">
+        <div class="row align-items-center">
+
+            <!-- Brand and copyright -->
+            <div class="col-md-4 text-center text-md-start mb-3 mb-md-0">
+                <img src="assets/images/logo.png"
+                     alt="Justicore logo"
+                     height="35"
+                     class="me-2">
+                <span class="fw-bold footer-brand">Justicore</span>
+                <p class="small footer-copy mt-1 mb-0">
+                    © 2015 Justicore. All rights reserved.
+                </p>
+            </div>
+
+            <!-- Page links -->
+            <div class="col-md-4 text-center mb-3 mb-md-0">
+                <a href="index.html"    class="footer-link me-3">Home</a>
+                <a href="tasks.html"    class="footer-link me-3">Tasks</a>
+                <a href="about.html"    class="footer-link me-3">About</a>
+                <a href="contact.html"  class="footer-link">Contact</a>
+            </div>
+
+            <!-- Social media icons -->
+            <div class="col-md-4 text-center text-md-end">
+                <span class="footer-social me-3" aria-label="LinkedIn">
+                    <i class="bi bi-linkedin fs-5" aria-hidden="true"></i>
+                </span>
+                <span class="footer-social me-3" aria-label="Twitter">
+                    <i class="bi bi-twitter-x fs-5" aria-hidden="true"></i>
+                </span>
+                <span class="footer-social me-3" aria-label="Facebook">
+                    <i class="bi bi-facebook fs-5" aria-hidden="true"></i>
+                </span>
+                <span class="footer-social" aria-label="Instagram">
+                    <i class="bi bi-instagram fs-5" aria-hidden="true"></i>
+                </span>
+            </div>
+
+        </div>
+    </div>
+</footer>
+<!-- END FOOTER -->
+
+
+</body>
+</html>
