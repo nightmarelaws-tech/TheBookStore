@@ -121,93 +121,48 @@
 
 
 <!-- ----- FEATURED BOOKS ----- -->
-<!-- Note: placeholder cards for now, real books come after database is set up -->
-<section class="py-5 bg-light-warm" aria-label="Featured books">
-    <div class="container">
+<!-- ----- FEATURED BOOKS LOOP -----  -->
+<!-- Django loops through each book from the database -->
+{% for book in featured_books %}
+    <div class="col-6 col-md-4 col-lg-3">
+        <div class="book-card">
 
-        <h2 class="section-title">Featured Books</h2>
-
-        <div class="row g-4">
-
-            <div class="col-6 col-md-4 col-lg-3">
-                <div class="book-card">
-                    <div class="book-cover-placeholder">
-                        <i class="bi bi-book" aria-hidden="true"></i>
-                    </div>
-                    <div class="book-card-body">
-                        <p class="book-category">Fiction</p>
-                        <h3 class="book-title">Book Title Here</h3>
-                        <p class="book-author">Author Name</p>
-                        <p class="book-price">€12.99</p>
-                        <a href="#" class="btn btn-merchant btn-sm w-100" aria-label="Add to cart">
-                            Add to Cart
-                        </a>
-                    </div>
+            <!-- Show cover image if exists, otherwise show placeholder -->
+            {% if book.cover_image %}
+                <img src="{{ book.cover_image.url }}"
+                     alt="Cover of {{ book.title }}"
+                     class="book-cover-img">
+            {% else %}
+                <!-- Placeholder shown when no cover image uploaded -->
+                <div class="book-cover-placeholder">
+                    <i class="bi bi-book" aria-hidden="true"></i>
                 </div>
-            </div>
+            {% endif %}
 
-            <div class="col-6 col-md-4 col-lg-3">
-                <div class="book-card">
-                    <div class="book-cover-placeholder">
-                        <i class="bi bi-book" aria-hidden="true"></i>
-                    </div>
-                    <div class="book-card-body">
-                        <p class="book-category">Non-Fiction</p>
-                        <h3 class="book-title">Another Book</h3>
-                        <p class="book-author">Author Name</p>
-                        <p class="book-price">€9.99</p>
-                        <a href="#" class="btn btn-merchant btn-sm w-100" aria-label="Add to cart">
-                            Add to Cart
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-6 col-md-4 col-lg-3">
-                <div class="book-card">
-                    <div class="book-cover-placeholder">
-                        <i class="bi bi-book" aria-hidden="true"></i>
-                    </div>
-                    <div class="book-card-body">
-                        <p class="book-category">Science</p>
-                        <h3 class="book-title">Science Book</h3>
-                        <p class="book-author">Author Name</p>
-                        <p class="book-price">€14.99</p>
-                        <a href="#" class="btn btn-merchant btn-sm w-100" aria-label="Add to cart">
-                            Add to Cart
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-6 col-md-4 col-lg-3">
-                <div class="book-card">
-                    <div class="book-cover-placeholder">
-                        <i class="bi bi-book" aria-hidden="true"></i>
-                    </div>
-                    <div class="book-card-body">
-                        <p class="book-category">Mystery</p>
-                        <h3 class="book-title">Mystery Book</h3>
-                        <p class="book-author">Author Name</p>
-                        <p class="book-price">€11.99</p>
-                        <a href="#" class="btn btn-merchant btn-sm w-100" aria-label="Add to cart">
-                            Add to Cart
-                        </a>
-                    </div>
-                </div>
+            <div class="book-card-body">
+                <!-- Category name above title -->
+                <p class="book-category">{{ book.category.name }}</p>
+                <!-- Book title -->
+                <h3 class="book-title">{{ book.title }}</h3>
+                <!-- Author name -->
+                <p class="book-author">by {{ book.author }}</p>
+                <!-- Price in euros -->
+                <p class="book-price">€{{ book.price }}</p>
+                <a href="/book/{{ book.slug }}/"
+                   class="btn btn-merchant btn-sm w-100"
+                   aria-label="View {{ book.title }}">
+                    View Book
+                </a>
             </div>
 
         </div>
-
-        <div class="text-center mt-4">
-            <a href="/catalogue/" class="btn btn-merchant-outline btn-lg" aria-label="View all books">
-                View All Books
-            </a>
-        </div>
-
     </div>
-</section>
-<!-- end featured books -->
+{% empty %}
+    <!-- This shows if no featured books exist in database yet -->
+    <div class="col-12">
+        <p class="text-muted">No featured books yet. Add some in the admin panel!</p>
+    </div>
+{% endfor %}
 
 
 <!-- ----- WHY CHOOSE US ----- -->
