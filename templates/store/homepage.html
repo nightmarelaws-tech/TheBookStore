@@ -1,325 +1,250 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <!-- Basic meta tags - helps Google find the site and makes it responsive on mobile -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="The Book Merchant - Your independent online bookstore">
-    <meta name="author" content="The Book Merchant">
-    <meta name="theme-color" content="#1a1209">
+{% extends 'base.html' %}
 
-    <title>{% block title %}The Book Merchant{% endblock %}</title>
+{% block title %}Home - The Book Merchant{% endblock %}
 
-    <!-- Bootstrap 5 CSS - gives us grid, buttons, navbar, cards -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+{% block content %}
 
-    <!-- Bootstrap Icons - icons like cart, heart, search -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-
-    <!-- Google Fonts - Playfair Display for headings, Lato for body text -->
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@400;600&display=swap" rel="stylesheet">
-
-    <!-- Our custom CSS - loads last so it overrides Bootstrap -->
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-
-    <!-- jQuery - required before Bootstrap JS and our scripts -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
-
-    <!-- Bootstrap JS - enables dropdowns, collapsible navbar, carousels -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
-
-    <!-- Our main JS file - dark mode, back to top, alerts -->
-    <script src="{% static 'js/main.js' %}" defer></script>
-</head>
-
-<body>
-
-<!-- ============================================================
-     NAVBAR
-     Sticky top navbar with logo, links, search bar, cart icon
-     ============================================================ -->
-<nav class="navbar navbar-expand-lg sticky-top" id="mainNavbar" aria-label="Main navigation">
+<!-- ----- HERO SECTION ----- -->
+<section class="hero-section" aria-label="Welcome banner">
     <div class="container">
+        <div class="row align-items-center">
 
-        <!-- Logo and brand name -->
-        <a class="navbar-brand" href="/" aria-label="The Book Merchant Home">
-            <i class="bi bi-book-half me-2" aria-hidden="true"></i>
-            <span>The Book <span class="brand-accent">Merchant</span></span>
-        </a>
-
-        <!-- Hamburger button - shows on mobile when screen is small -->
-        <button class="navbar-toggler"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#navbarMenu"
-                aria-controls="navbarMenu"
-                aria-expanded="false"
-                aria-label="Toggle navigation menu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <!-- Navigation links - collapse on mobile -->
-        <div class="collapse navbar-collapse" id="navbarMenu">
-
-            <!-- Left side links -->
-            <ul class="navbar-nav me-auto align-items-center gap-1" role="list">
-
-                <li class="nav-item">
-                    <a class="nav-link" href="/">Home</a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="/catalogue/">Catalogue</a>
-                </li>
-
-                <!-- Categories dropdown menu -->
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle"
-                       href="#"
-                       role="button"
-                       data-bs-toggle="dropdown"
-                       aria-expanded="false">
-                        Categories
-                    </a>
-                    <ul class="dropdown-menu">
-                        <!-- These will be dynamic later from the database -->
-                        <li><a class="dropdown-item" href="/catalogue/?category=fiction">Fiction</a></li>
-                        <li><a class="dropdown-item" href="/catalogue/?category=non-fiction">Non-Fiction</a></li>
-                        <li><a class="dropdown-item" href="/catalogue/?category=children">Children's</a></li>
-                        <li><a class="dropdown-item" href="/catalogue/?category=science">Science</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="/catalogue/">All Categories</a></li>
-                    </ul>
-                </li>
-
-            </ul>
-
-            <!-- Center - search bar -->
-            <form class="d-flex navbar-search me-3" action="/search/" method="GET" role="search">
-                <input class="form-control"
-                       type="search"
-                       name="q"
-                       placeholder="Search books, authors..."
-                       aria-label="Search books"
-                       maxlength="200">
-                <button class="btn btn-search ms-1" type="submit" aria-label="Submit search">
-                    <i class="bi bi-search" aria-hidden="true"></i>
-                </button>
-            </form>
-
-            <!-- Right side - cart, wishlist, login -->
-            <ul class="navbar-nav align-items-center gap-2" role="list">
-
-                <!-- Wishlist icon -->
-                <li class="nav-item">
-                    <a class="nav-link" href="/wishlist/" aria-label="My Wishlist">
-                        <i class="bi bi-heart fs-5" aria-hidden="true"></i>
-                    </a>
-                </li>
-
-                <!-- Shopping cart icon with item count badge -->
-                <li class="nav-item">
-                    <a class="nav-link cart-nav-link" href="/cart/" aria-label="Shopping cart">
-                        <i class="bi bi-bag fs-5" aria-hidden="true"></i>
-                        <!-- Cart count - updated by JavaScript -->
-                        {% if cart_count %}
-                            <span class="cart-badge">{{ cart_count }}</span>
-                        {% endif %}
-                    </a>
-                </li>
-
-                <!-- Show different options based on if user is logged in -->
-                {% if user.is_authenticated %}
-
-                    <!-- User dropdown when logged in -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle"
-                           href="#"
-                           role="button"
-                           data-bs-toggle="dropdown"
-                           aria-expanded="false">
-                            <i class="bi bi-person-circle me-1" aria-hidden="true"></i>
-                            {{ user.first_name|default:user.username }}
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="/dashboard/">
-                                <i class="bi bi-speedometer2 me-2"></i>Dashboard
-                            </a></li>
-                            <li><a class="dropdown-item" href="/profile/">
-                                <i class="bi bi-person me-2"></i>My Profile
-                            </a></li>
-                            <li><a class="dropdown-item" href="/orders/">
-                                <i class="bi bi-bag-check me-2"></i>My Orders
-                            </a></li>
-
-                            <!-- Show admin panel link only to staff/admin users -->
-                            {% if user.is_staff %}
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item text-danger" href="/admin-panel/">
-                                <i class="bi bi-shield-lock me-2"></i>Admin Panel
-                            </a></li>
-                            {% endif %}
-
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="/logout/">
-                                <i class="bi bi-box-arrow-right me-2"></i>Sign Out
-                            </a></li>
-                        </ul>
-                    </li>
-
-                {% else %}
-
-                    <!-- Login and Register buttons when NOT logged in -->
-                    <li class="nav-item">
-                        <a class="nav-link" href="/login/">Sign In</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="btn btn-navbar-register" href="/register/">Register</a>
-                    </li>
-
-                {% endif %}
-
-                <!-- Dark mode toggle button -->
-                <li class="nav-item">
-                    <button class="btn btn-sm dark-toggle" id="darkModeToggle" aria-label="Toggle dark mode">
-                        <i class="bi bi-moon-fill" aria-hidden="true"></i>
-                    </button>
-                </li>
-
-            </ul>
-        </div>
-        <!-- end navbar collapse -->
-
-    </div>
-</nav>
-<!-- END NAVBAR -->
-
-
-<!-- Flash messages - Django success/error messages shown here -->
-<div class="container mt-3">
-    {% if messages %}
-        {% for message in messages %}
-            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                {{ message }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        {% endfor %}
-    {% endif %}
-</div>
-
-
-<!-- ============================================================
-     MAIN CONTENT
-     Each page fills this block with its own content
-     ============================================================ -->
-<main id="mainContent">
-    {% block content %}
-    {% endblock %}
-</main>
-<!-- END MAIN CONTENT -->
-
-
-<!-- ============================================================
-     FOOTER
-     Three columns: brand, links, social media
-     ============================================================ -->
-<footer class="py-5" id="mainFooter" role="contentinfo">
-    <div class="container">
-        <div class="row">
-
-            <!-- Column 1 - Brand and description -->
-            <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
-                <h5 class="footer-brand mb-3">
-                    <i class="bi bi-book-half me-2" aria-hidden="true"></i>
-                    The Book Merchant
-                </h5>
-                <p class="footer-text">
-                    Your independent online bookstore. We believe every book
-                    opens a new world. Browse thousands of titles across all genres.
+            <!-- Left side - text and buttons -->
+            <div class="col-lg-6">
+                <h1 class="hero-title">
+                    Find Your Next<br>
+                    <span class="hero-accent">Favourite Book</span>
+                </h1>
+                <p class="hero-subtitle">
+                    Thousands of titles across all genres.
+                    From timeless classics to brand new releases.
                 </p>
-                <!-- Social media icons -->
-                <div class="mt-3">
-                    <a href="#" class="footer-social me-3" aria-label="Facebook">
-                        <i class="bi bi-facebook fs-5" aria-hidden="true"></i>
+                <div class="d-flex gap-3 flex-wrap">
+                    <a href="/catalogue/" class="btn btn-merchant btn-lg" aria-label="Browse all books">
+                        <i class="bi bi-book me-2" aria-hidden="true"></i>
+                        Browse Books
                     </a>
-                    <a href="#" class="footer-social me-3" aria-label="Instagram">
-                        <i class="bi bi-instagram fs-5" aria-hidden="true"></i>
+                    <a href="/search/" class="btn btn-merchant-outline btn-lg" aria-label="Search books">
+                        <i class="bi bi-search me-2" aria-hidden="true"></i>
+                        Search
                     </a>
-                    <a href="#" class="footer-social me-3" aria-label="Twitter">
-                        <i class="bi bi-twitter-x fs-5" aria-hidden="true"></i>
-                    </a>
+                </div>
+
+                <!-- Quick stats -->
+                <div class="hero-stats mt-4">
+                    <div>
+                        <div class="hero-stat-number">5,000+</div>
+                        <div class="hero-stat-label">Books</div>
+                    </div>
+                    <div>
+                        <div class="hero-stat-number">50+</div>
+                        <div class="hero-stat-label">Genres</div>
+                    </div>
+                    <div>
+                        <div class="hero-stat-number">1,000+</div>
+                        <div class="hero-stat-label">Authors</div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Column 2 - Quick links -->
-            <div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
-                <h6 class="footer-heading mb-3">Browse</h6>
-                <ul class="footer-links">
-                    <li><a href="/catalogue/">All Books</a></li>
-                    <li><a href="/catalogue/?category=fiction">Fiction</a></li>
-                    <li><a href="/catalogue/?category=non-fiction">Non-Fiction</a></li>
-                    <li><a href="/catalogue/?category=children">Children's</a></li>
-                    <li><a href="/search/">Search</a></li>
-                </ul>
-            </div>
-
-            <!-- Column 3 - Account links -->
-            <div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
-                <h6 class="footer-heading mb-3">Account</h6>
-                <ul class="footer-links">
-                    <li><a href="/login/">Sign In</a></li>
-                    <li><a href="/register/">Register</a></li>
-                    <li><a href="/dashboard/">Dashboard</a></li>
-                    <li><a href="/orders/">My Orders</a></li>
-                    <li><a href="/wishlist/">Wishlist</a></li>
-                </ul>
-            </div>
-
-            <!-- Column 4 - Contact info -->
-            <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
-                <h6 class="footer-heading mb-3">Contact Us</h6>
-                <ul class="footer-links">
-                    <li>
-                        <i class="bi bi-envelope me-2" aria-hidden="true"></i>
-                        hello@bookmerchant.com
-                    </li>
-                    <li>
-                        <i class="bi bi-telephone me-2" aria-hidden="true"></i>
-                        +30 210 123 4567
-                    </li>
-                    <li>
-                        <i class="bi bi-geo-alt me-2" aria-hidden="true"></i>
-                        Athens, Greece
-                    </li>
-                </ul>
+            <!-- Right side - decorative icon -->
+            <div class="col-lg-6 text-center d-none d-lg-block">
+                <i class="bi bi-book-half hero-icon" aria-hidden="true"></i>
             </div>
 
         </div>
+    </div>
+</section>
+<!-- end hero -->
 
-        <!-- Bottom bar - copyright -->
-        <hr class="footer-divider mt-4">
-        <div class="row align-items-center">
-            <div class="col-md-6 text-center text-md-start">
-                <p class="footer-copy mb-0">
-                    © 2025 The Book Merchant. All rights reserved.
-                </p>
+
+<!-- ----- CATEGORIES SECTION ----- -->
+<section class="py-5" aria-label="Book categories">
+    <div class="container">
+
+        <h2 class="section-title">Browse by Category</h2>
+
+        <div class="row g-3">
+            <div class="col-6 col-md-3">
+                <a href="/catalogue/?category=fiction" class="category-card" aria-label="Browse Fiction">
+                    <i class="bi bi-feather category-icon" aria-hidden="true"></i>
+                    <span>Fiction</span>
+                </a>
             </div>
-            <div class="col-md-6 text-center text-md-end">
-                <a href="#" class="footer-link me-3">Privacy Policy</a>
-                <a href="#" class="footer-link">Terms of Service</a>
+            <div class="col-6 col-md-3">
+                <a href="/catalogue/?category=non-fiction" class="category-card" aria-label="Browse Non-Fiction">
+                    <i class="bi bi-lightbulb category-icon" aria-hidden="true"></i>
+                    <span>Non-Fiction</span>
+                </a>
+            </div>
+            <div class="col-6 col-md-3">
+                <a href="/catalogue/?category=science" class="category-card" aria-label="Browse Science">
+                    <i class="bi bi-rocket category-icon" aria-hidden="true"></i>
+                    <span>Science</span>
+                </a>
+            </div>
+            <div class="col-6 col-md-3">
+                <a href="/catalogue/?category=children" class="category-card" aria-label="Browse Children">
+                    <i class="bi bi-stars category-icon" aria-hidden="true"></i>
+                    <span>Children's</span>
+                </a>
+            </div>
+            <div class="col-6 col-md-3">
+                <a href="/catalogue/?category=history" class="category-card" aria-label="Browse History">
+                    <i class="bi bi-hourglass category-icon" aria-hidden="true"></i>
+                    <span>History</span>
+                </a>
+            </div>
+            <div class="col-6 col-md-3">
+                <a href="/catalogue/?category=biography" class="category-card" aria-label="Browse Biography">
+                    <i class="bi bi-person-lines-fill category-icon" aria-hidden="true"></i>
+                    <span>Biography</span>
+                </a>
+            </div>
+            <div class="col-6 col-md-3">
+                <a href="/catalogue/?category=mystery" class="category-card" aria-label="Browse Mystery">
+                    <i class="bi bi-eye category-icon" aria-hidden="true"></i>
+                    <span>Mystery</span>
+                </a>
+            </div>
+            <div class="col-6 col-md-3">
+                <a href="/catalogue/" class="category-card" aria-label="All books">
+                    <i class="bi bi-grid category-icon" aria-hidden="true"></i>
+                    <span>All Books</span>
+                </a>
             </div>
         </div>
 
     </div>
-</footer>
-<!-- END FOOTER -->
+</section>
+<!-- end categories -->
 
 
-<!-- Back to top button - appears when user scrolls down -->
-<button id="backToTop" aria-label="Back to top">
-    <i class="bi bi-arrow-up" aria-hidden="true"></i>
-</button>
+<!-- ----- FEATURED BOOKS ----- -->
+<!-- Note: placeholder cards for now, real books come after database is set up -->
+<section class="py-5 bg-light-warm" aria-label="Featured books">
+    <div class="container">
 
-</body>
-</html>
+        <h2 class="section-title">Featured Books</h2>
+
+        <div class="row g-4">
+
+            <div class="col-6 col-md-4 col-lg-3">
+                <div class="book-card">
+                    <div class="book-cover-placeholder">
+                        <i class="bi bi-book" aria-hidden="true"></i>
+                    </div>
+                    <div class="book-card-body">
+                        <p class="book-category">Fiction</p>
+                        <h3 class="book-title">Book Title Here</h3>
+                        <p class="book-author">Author Name</p>
+                        <p class="book-price">€12.99</p>
+                        <a href="#" class="btn btn-merchant btn-sm w-100" aria-label="Add to cart">
+                            Add to Cart
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6 col-md-4 col-lg-3">
+                <div class="book-card">
+                    <div class="book-cover-placeholder">
+                        <i class="bi bi-book" aria-hidden="true"></i>
+                    </div>
+                    <div class="book-card-body">
+                        <p class="book-category">Non-Fiction</p>
+                        <h3 class="book-title">Another Book</h3>
+                        <p class="book-author">Author Name</p>
+                        <p class="book-price">€9.99</p>
+                        <a href="#" class="btn btn-merchant btn-sm w-100" aria-label="Add to cart">
+                            Add to Cart
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6 col-md-4 col-lg-3">
+                <div class="book-card">
+                    <div class="book-cover-placeholder">
+                        <i class="bi bi-book" aria-hidden="true"></i>
+                    </div>
+                    <div class="book-card-body">
+                        <p class="book-category">Science</p>
+                        <h3 class="book-title">Science Book</h3>
+                        <p class="book-author">Author Name</p>
+                        <p class="book-price">€14.99</p>
+                        <a href="#" class="btn btn-merchant btn-sm w-100" aria-label="Add to cart">
+                            Add to Cart
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6 col-md-4 col-lg-3">
+                <div class="book-card">
+                    <div class="book-cover-placeholder">
+                        <i class="bi bi-book" aria-hidden="true"></i>
+                    </div>
+                    <div class="book-card-body">
+                        <p class="book-category">Mystery</p>
+                        <h3 class="book-title">Mystery Book</h3>
+                        <p class="book-author">Author Name</p>
+                        <p class="book-price">€11.99</p>
+                        <a href="#" class="btn btn-merchant btn-sm w-100" aria-label="Add to cart">
+                            Add to Cart
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="text-center mt-4">
+            <a href="/catalogue/" class="btn btn-merchant-outline btn-lg" aria-label="View all books">
+                View All Books
+            </a>
+        </div>
+
+    </div>
+</section>
+<!-- end featured books -->
+
+
+<!-- ----- WHY CHOOSE US ----- -->
+<section class="py-5" aria-label="Why choose The Book Merchant">
+    <div class="container">
+
+        <h2 class="section-title text-center">Why The Book Merchant?</h2>
+
+        <div class="row g-4 mt-2">
+
+            <div class="col-md-4 text-center">
+                <div class="why-card">
+                    <i class="bi bi-truck why-icon" aria-hidden="true"></i>
+                    <h3>Fast Delivery</h3>
+                    <p>Get your books delivered to your door within 2-3 business days.</p>
+                </div>
+            </div>
+
+            <div class="col-md-4 text-center">
+                <div class="why-card">
+                    <i class="bi bi-shield-check why-icon" aria-hidden="true"></i>
+                    <h3>Secure Shopping</h3>
+                    <p>Your data is always safe with us. Shop with confidence.</p>
+                </div>
+            </div>
+
+            <div class="col-md-4 text-center">
+                <div class="why-card">
+                    <i class="bi bi-heart why-icon" aria-hidden="true"></i>
+                    <h3>Curated Selection</h3>
+                    <p>Every book in our catalogue is handpicked by book lovers.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+<!-- end why section -->
+
+{% endblock %}

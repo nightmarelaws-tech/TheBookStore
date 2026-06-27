@@ -11,8 +11,7 @@ Sections:
 */
 
 
-/*1. CSS VARIABLES
-   All colours defined here - change one place, updates everywhere */
+/*1. CSS VARIABLES*/
 :root {
     /* Main colours */
     --color-bg:       #faf7f2;   /* warm white - page background */
@@ -44,10 +43,8 @@ body.dark-mode {
 }
 
 
-/* ============================================================
-   2. BASE STYLES
-   Basic reset and typography
-   ============================================================ */
+/*2. BASE STYLES
+   Basic reset and typography*/
 
 /* Apply our background and font to the whole page */
 body {
@@ -73,10 +70,9 @@ a:hover {
 }
 
 
-/* ============================================================
+/*
    3. NAVBAR
-   Dark background, gold accent on hover
-   ============================================================ */
+   Dark background, gold accent on hover*/
 
 /* Main navbar background */
 #mainNavbar {
@@ -204,10 +200,8 @@ a:hover {
 }
 
 
-/* ============================================================
-   4. FOOTER
-   Dark background matching the navbar
-   ============================================================ */
+/*4. FOOTER
+   Dark background matching the navbar*/
 
 #mainFooter {
     background-color: var(--color-dark);
@@ -287,10 +281,8 @@ a:hover {
 }
 
 
-/* ============================================================
-   5. UTILITIES
-   Reusable helper classes used across all pages
-   ============================================================ */
+/*5. UTILITIES
+   Reusable helper classes used across all pages*/
 
 /* Main action button used across the site */
 .btn-merchant {
@@ -353,10 +345,8 @@ a:hover {
 }
 
 
-/* ============================================================
-   6. DARK MODE
-   Extra overrides needed when dark mode is active
-   ============================================================ */
+/* 6. DARK MODE
+   Extra overrides needed when dark mode is active*/
 
 /* Navbar toggler icon (hamburger) in dark mode */
 body.dark-mode .navbar-toggler-icon {
@@ -376,4 +366,192 @@ body.dark-mode .form-select {
     background-color: var(--color-card);
     border-color:     var(--color-border);
     color:            var(--color-text);
+}
+
+/*--------------------HOMEPAGE STYLES------------------ */
+
+/* Hero section - dark background with brown gradient */
+.hero-section {
+    background: linear-gradient(135deg, #1a1209 0%, #2d1a0a 60%, #3d2010 100%);
+    color:    #faf7f2;
+    padding:  5rem 0;
+}
+
+/* Big heading in the hero */
+.hero-title {
+    font-family:   var(--font-heading);
+    font-size:     clamp(2rem, 5vw, 3.2rem);
+    font-weight:   700;
+    line-height:   1.2;
+    margin-bottom: 1rem;
+    color:         #faf7f2;
+}
+
+/* The gold coloured word in the hero title */
+.hero-accent {
+    color: var(--color-gold);
+}
+
+/* Subtitle text under the hero title */
+.hero-subtitle {
+    font-size:     1.1rem;
+    color:         rgba(250,247,242,0.8);
+    margin-bottom: 1.5rem;
+    max-width:     480px;
+}
+
+/* Stats row (5000+ books, 50+ genres etc) */
+.hero-stats {
+    display: flex;
+    gap:     2.5rem;
+}
+.hero-stat-number {
+    font-family: var(--font-heading);
+    font-size:   1.8rem;
+    font-weight: 700;
+    color:       var(--color-gold);
+    line-height: 1;
+}
+.hero-stat-label {
+    font-size:      0.8rem;
+    color:          rgba(250,247,242,0.6);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Big decorative book icon on the right side of hero */
+.hero-icon {
+    font-size: 14rem;
+    color:     rgba(212,160,23,0.15);
+}
+
+/* Outline button variant used next to main button */
+.btn-merchant-outline {
+    background:   transparent;
+    border:       2px solid #faf7f2;
+    color:        #faf7f2;
+    font-weight:  600;
+    border-radius: var(--radius);
+    transition:   all var(--transition);
+}
+.btn-merchant-outline:hover {
+    background: #faf7f2;
+    color:      var(--color-dark);
+}
+
+/* Category cards - clickable boxes */
+.category-card {
+    display:          flex;
+    flex-direction:   column;
+    align-items:      center;
+    justify-content:  center;
+    gap:              0.5rem;
+    padding:          1.5rem 1rem;
+    background:       var(--color-card);
+    border:           1px solid var(--color-border);
+    border-radius:    var(--radius);
+    color:            var(--color-text);
+    font-weight:      600;
+    text-align:       center;
+    transition:       all var(--transition);
+    text-decoration:  none;
+    min-height:       110px;
+}
+.category-card:hover {
+    background:  var(--color-accent);
+    color:       #fff;
+    border-color: var(--color-accent);
+    transform:   translateY(-3px);
+    box-shadow:  0 6px 16px rgba(139,69,19,0.25);
+}
+
+/* Icon inside category card */
+.category-icon {
+    font-size: 1.8rem;
+}
+
+/* Light warm background for alternating sections */
+.bg-light-warm {
+    background-color: var(--color-card);
+}
+
+/* Book card */
+.book-card {
+    background:    var(--color-card);
+    border:        1px solid var(--color-border);
+    border-radius: var(--radius);
+    overflow:      hidden;
+    transition:    transform var(--transition), box-shadow var(--transition);
+    height:        100%;
+}
+.book-card:hover {
+    transform:  translateY(-4px);
+    box-shadow: 0 8px 24px rgba(26,18,9,0.15);
+}
+
+/* Book cover placeholder when no image */
+.book-cover-placeholder {
+    height:           180px;
+    background:       linear-gradient(135deg, #c9b99a, #a08060);
+    display:          flex;
+    align-items:      center;
+    justify-content:  center;
+    color:            rgba(255,255,255,0.6);
+    font-size:        3.5rem;
+}
+
+/* Book card text area */
+.book-card-body {
+    padding: 1rem;
+}
+.book-category {
+    font-size:      0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color:          var(--color-muted);
+    margin-bottom:  0.25rem;
+}
+.book-title {
+    font-family:   var(--font-heading);
+    font-size:     1rem;
+    font-weight:   600;
+    margin-bottom: 0.25rem;
+    /* Limit to 2 lines */
+    display:            -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp:         2;
+    -webkit-box-orient: vertical;
+    overflow:           hidden;
+}
+.book-author {
+    font-size:     0.8rem;
+    color:         var(--color-muted);
+    margin-bottom: 0.5rem;
+}
+.book-price {
+    font-family:   var(--font-heading);
+    font-size:     1.1rem;
+    font-weight:   700;
+    color:         var(--color-accent);
+    margin-bottom: 0.75rem;
+}
+
+/* Why choose us cards */
+.why-card {
+    padding: 2rem 1rem;
+}
+.why-icon {
+    font-size:     3rem;
+    color:         var(--color-accent);
+    margin-bottom: 1rem;
+    display:       block;
+}
+.why-card h3 {
+    font-family:   var(--font-heading);
+    font-size:     1.2rem;
+    margin-bottom: 0.5rem;
+}
+.why-card p {
+    color:     var(--color-muted);
+    font-size: 0.9rem;
 }
