@@ -1,3 +1,7 @@
 from django.shortcuts import render
 
-# Create your views here.
+def homepage(request):
+    """Temporary homepage - just to test header and footer."""
+    return render(request, 'store/homepage.html', {
+        'page_title': 'The Book Merchant',
+    })

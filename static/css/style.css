@@ -1,0 +1,379 @@
+/*
+The Book Merchant - Main Stylesheet
+Loads after Bootstrap so our rules win.
+Sections:
+1. CSS Variables (colours, fonts)
+2. Base styles
+3. Navbar
+4. Footer
+5. Utilities
+6. Dark mode
+*/
+
+
+/*1. CSS VARIABLES
+   All colours defined here - change one place, updates everywhere */
+:root {
+    /* Main colours */
+    --color-bg:       #faf7f2;   /* warm white - page background */
+    --color-dark:     #1a1209;   /* near black - navbar, footer */
+    --color-accent:   #8b4513;   /* saddle brown - buttons, links */
+    --color-accent-hover: #c1773a; /* lighter brown - hover state */
+    --color-gold:     #d4a017;   /* gold - star ratings, highlights */
+    --color-text:     #1a1209;   /* main text colour */
+    --color-muted:    #6b5a47;   /* grey-brown - secondary text */
+    --color-border:   #d9cfc0;   /* warm border colour */
+    --color-card:     #f0ead8;   /* card background */
+
+    /* Fonts */
+    --font-heading: 'Playfair Display', Georgia, serif;
+    --font-body:    'Lato', 'Helvetica Neue', sans-serif;
+
+    /* Spacing */
+    --radius: 8px;               /* border radius for cards and buttons */
+    --transition: 0.2s ease;     /* standard transition speed */
+}
+
+/* Dark mode colours - applied when body has class 'dark-mode' */
+body.dark-mode {
+    --color-bg:     #1a1209;
+    --color-text:   #f0ead8;
+    --color-muted:  #b09a7e;
+    --color-border: #3d2d1c;
+    --color-card:   #2a1f12;
+}
+
+
+/* ============================================================
+   2. BASE STYLES
+   Basic reset and typography
+   ============================================================ */
+
+/* Apply our background and font to the whole page */
+body {
+    font-family:      var(--font-body);
+    background-color: var(--color-bg);
+    color:            var(--color-text);
+    transition:       background-color var(--transition), color var(--transition);
+}
+
+/* All headings use the display (serif) font */
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+}
+
+/* Links use our accent colour */
+a {
+    color:           var(--color-accent);
+    text-decoration: none;
+    transition:      color var(--transition);
+}
+a:hover {
+    color: var(--color-accent-hover);
+}
+
+
+/* ============================================================
+   3. NAVBAR
+   Dark background, gold accent on hover
+   ============================================================ */
+
+/* Main navbar background */
+#mainNavbar {
+    background-color: var(--color-dark);
+    border-bottom:    2px solid var(--color-accent);
+    padding:          0.6rem 0;
+}
+
+/* Brand/logo text */
+.navbar-brand {
+    font-family: var(--font-heading);
+    font-size:   1.5rem;
+    font-weight: 700;
+    color:       #faf7f2 !important; /* force white on dark background */
+}
+
+/* The gold word "Merchant" in the logo */
+.brand-accent {
+    color: var(--color-gold);
+}
+
+/* All nav links - light colour on dark background */
+#mainNavbar .nav-link {
+    color:      rgba(250,247,242,0.85) !important;
+    font-size:  0.9rem;
+    padding:    0.5rem 0.75rem !important;
+    transition: color var(--transition);
+}
+
+/* Nav link hover and active state */
+#mainNavbar .nav-link:hover,
+#mainNavbar .nav-link.active {
+    color: var(--color-gold) !important;
+}
+
+/* Dropdown menu dark styling */
+#mainNavbar .dropdown-menu {
+    background-color: #26180d;  /* slightly lighter than navbar */
+    border:           1px solid var(--color-accent);
+    border-radius:    var(--radius);
+}
+
+/* Dropdown items */
+#mainNavbar .dropdown-item {
+    color:      rgba(250,247,242,0.85);
+    font-size:  0.875rem;
+    padding:    0.45rem 1rem;
+    transition: background-color var(--transition);
+}
+#mainNavbar .dropdown-item:hover {
+    background-color: var(--color-accent);
+    color:            #fff;
+}
+
+/* Search bar inside navbar */
+.navbar-search .form-control {
+    background-color: rgba(255,255,255,0.1);
+    border-color:     rgba(255,255,255,0.2);
+    color:            #faf7f2;
+    font-size:        0.85rem;
+    max-width:        220px;
+}
+.navbar-search .form-control::placeholder {
+    color: rgba(250,247,242,0.5);
+}
+.navbar-search .form-control:focus {
+    background-color: rgba(255,255,255,0.15);
+    border-color:     var(--color-gold);
+    color:            #faf7f2;
+    box-shadow:       none;
+}
+
+/* Search submit button */
+.btn-search {
+    background-color: var(--color-accent);
+    border-color:     var(--color-accent);
+    color:            #fff;
+    font-size:        0.85rem;
+}
+.btn-search:hover {
+    background-color: var(--color-accent-hover);
+    color: #fff;
+}
+
+/* Register button in navbar - stands out from plain links */
+.btn-navbar-register {
+    background-color: var(--color-accent);
+    color:            #fff !important;
+    border-radius:    var(--radius);
+    padding:          0.35rem 1rem;
+    font-size:        0.875rem;
+    font-weight:      600;
+    transition:       background-color var(--transition);
+}
+.btn-navbar-register:hover {
+    background-color: var(--color-accent-hover);
+    color: #fff !important;
+}
+
+/* Shopping cart badge - small number over cart icon */
+.cart-badge {
+    display:          inline-block;
+    background-color: var(--color-gold);
+    color:            var(--color-dark);
+    font-size:        0.65rem;
+    font-weight:      700;
+    border-radius:    50%;
+    padding:          1px 5px;
+    vertical-align:   super;
+    margin-left:      2px;
+}
+
+/* Dark mode toggle button */
+.dark-toggle {
+    background:  none;
+    border:      none;
+    color:       rgba(250,247,242,0.7);
+    font-size:   1rem;
+    cursor:      pointer;
+    padding:     0.4rem 0.5rem;
+    transition:  color var(--transition);
+}
+.dark-toggle:hover {
+    color: var(--color-gold);
+}
+
+
+/* ============================================================
+   4. FOOTER
+   Dark background matching the navbar
+   ============================================================ */
+
+#mainFooter {
+    background-color: var(--color-dark);
+    border-top:       2px solid var(--color-accent);
+    margin-top:       4rem;
+}
+
+/* Footer brand name */
+.footer-brand {
+    font-family: var(--font-heading);
+    color:       var(--color-gold);
+    font-size:   1.2rem;
+}
+
+/* Footer paragraph text */
+.footer-text {
+    color:     rgba(250,247,242,0.65);
+    font-size: 0.875rem;
+}
+
+/* Footer column headings */
+.footer-heading {
+    color:          var(--color-gold);
+    font-family:    var(--font-heading);
+    font-size:      0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Footer link lists - remove bullet points */
+.footer-links {
+    list-style: none;
+    padding:    0;
+    margin:     0;
+}
+.footer-links li {
+    margin-bottom: 0.4rem;
+    color:         rgba(250,247,242,0.65);
+    font-size:     0.875rem;
+}
+.footer-links a {
+    color:      rgba(250,247,242,0.65);
+    transition: color var(--transition);
+}
+.footer-links a:hover {
+    color: var(--color-gold);
+}
+
+/* Social media icons */
+.footer-social {
+    color:      rgba(250,247,242,0.65);
+    transition: color var(--transition);
+}
+.footer-social:hover {
+    color: var(--color-gold);
+}
+
+/* Horizontal line separating footer content from copyright */
+.footer-divider {
+    border-color: rgba(255,255,255,0.1);
+}
+
+/* Copyright text */
+.footer-copy {
+    color:     rgba(250,247,242,0.4);
+    font-size: 0.8rem;
+}
+
+/* Inline footer links (privacy, terms) */
+.footer-link {
+    color:      rgba(250,247,242,0.4);
+    font-size:  0.8rem;
+    transition: color var(--transition);
+}
+.footer-link:hover {
+    color: var(--color-gold);
+}
+
+
+/* ============================================================
+   5. UTILITIES
+   Reusable helper classes used across all pages
+   ============================================================ */
+
+/* Main action button used across the site */
+.btn-merchant {
+    background-color: var(--color-accent);
+    border-color:     var(--color-accent);
+    color:            #fff;
+    font-weight:      600;
+    border-radius:    var(--radius);
+    transition:       all var(--transition);
+}
+.btn-merchant:hover {
+    background-color: var(--color-accent-hover);
+    border-color:     var(--color-accent-hover);
+    color:            #fff;
+    transform:        translateY(-1px);
+}
+
+/* Section title with brown underline */
+.section-title {
+    font-family:   var(--font-heading);
+    font-size:     1.75rem;
+    font-weight:   700;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    position:      relative;
+}
+/* The brown underline under section titles */
+.section-title::after {
+    content:          '';
+    position:         absolute;
+    bottom:           0;
+    left:             0;
+    width:            50px;
+    height:           3px;
+    background-color: var(--color-accent);
+    border-radius:    2px;
+}
+
+/* Back to top floating button */
+#backToTop {
+    position:         fixed;
+    bottom:           2rem;
+    right:            1.5rem;
+    z-index:          9999;
+    display:          none;      /* hidden by default, JS shows it */
+    background-color: var(--color-accent);
+    color:            #fff;
+    border:           none;
+    border-radius:    50%;
+    width:            46px;
+    height:           46px;
+    font-size:        1.1rem;
+    cursor:           pointer;
+    box-shadow:       0 4px 12px rgba(0,0,0,0.2);
+    transition:       background-color var(--transition), transform var(--transition);
+}
+#backToTop:hover {
+    background-color: var(--color-accent-hover);
+    transform:        translateY(-2px);
+}
+
+
+/* ============================================================
+   6. DARK MODE
+   Extra overrides needed when dark mode is active
+   ============================================================ */
+
+/* Navbar toggler icon (hamburger) in dark mode */
+body.dark-mode .navbar-toggler-icon {
+    filter: invert(1);
+}
+
+/* Cards in dark mode */
+body.dark-mode .card {
+    background-color: var(--color-card);
+    border-color:     var(--color-border);
+    color:            var(--color-text);
+}
+
+/* Form inputs in dark mode */
+body.dark-mode .form-control,
+body.dark-mode .form-select {
+    background-color: var(--color-card);
+    border-color:     var(--color-border);
+    color:            var(--color-text);
+}
