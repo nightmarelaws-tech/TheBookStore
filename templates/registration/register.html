@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+
+{% block title %}Register - The Book Merchant{% endblock %}
+
+{% block content %}
+
+<!-- ----- REGISTER PAGE ----- -->
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+
+            <!-- ----- register card ----- -->
+            <div class="form-card">
+
+                <!-- title -->
+                <h2 class="section-title">Create Account</h2>
+                <p class="text-muted mb-4">Join The Book Merchant today</p>
+
+                <!-- ----- register form ----- -->
+                <form method="POST" action="/register/">
+                    {% csrf_token %}
+
+                    <!-- first and last name side by side -->
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="first_name" class="form-label">First Name</label>
+                            <input type="text"
+                                   class="form-control"
+                                   id="first_name"
+                                   name="first_name"
+                                   maxlength="50"
+                                   placeholder="First name"
+                                   required
+                                   aria-label="First name">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="last_name" class="form-label">Last Name</label>
+                            <input type="text"
+                                   class="form-control"
+                                   id="last_name"
+                                   name="last_name"
+                                   maxlength="50"
+                                   placeholder="Last name"
+                                   required
+                                   aria-label="Last name">
+                        </div>
+                    </div>
+
+                    <!-- email -->
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email Address</label>
+                        <input type="email"
+                               class="form-control"
+                               id="email"
+                               name="email"
+                               maxlength="254"
+                               placeholder="your@email.com"
+                               required
+                               aria-label="Email address">
+                    </div>
+
+                    <!-- username -->
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text"
+                               class="form-control"
+                               id="username"
+                               name="username"
+                               maxlength="150"
+                               placeholder="Choose a username"
+                               required
+                               aria-label="Username">
+                    </div>
+
+                    <!-- password -->
+                    <div class="mb-3">
+                        <label for="password1" class="form-label">Password</label>
+                        <input type="password"
+                               class="form-control"
+                               id="password1"
+                               name="password1"
+                               maxlength="128"
+                               placeholder="Choose a password"
+                               required
+                               aria-label="Password">
+                    </div>
+
+                    <!-- confirm password -->
+                    <div class="mb-3">
+                        <label for="password2" class="form-label">Confirm Password</label>
+                        <input type="password"
+                               class="form-control"
+                               id="password2"
+                               name="password2"
+                               maxlength="128"
+                               placeholder="Repeat your password"
+                               required
+                               aria-label="Confirm password">
+                    </div>
+
+                    <!-- submit -->
+                    <button type="submit"
+                            class="btn btn-merchant w-100 mt-2"
+                            aria-label="Create your account">
+                        Create Account
+                    </button>
+
+                </form>
+                <!-- end register form -->
+
+                <!-- link to login -->
+                <p class="text-center mt-3 text-muted">
+                    Already have an account?
+                    <a href="/login/">Sign in here</a>
+                </p>
+
+            </div>
+            <!-- end register card -->
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}
