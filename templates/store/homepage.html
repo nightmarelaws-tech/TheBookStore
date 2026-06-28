@@ -126,54 +126,63 @@
 <!-- end categories -->
 
 
-<!-- ----- FEATURED BOOKS ----- -->
+<!-- ----- FEATURED BOOKS CAROUSEL ----- -->
 <section class="py-5 bg-light-warm" aria-label="Featured books">
     <div class="container">
 
-        <h2 class="section-title">Featured Books</h2>
-
-        <!-- row div is required for Bootstrap grid to work side by side -->
-        <div class="row g-4">
-
-            {% for book in featured_books %}
-            <div class="col-6 col-md-4 col-lg-3">
-                <div class="book-card">
-
-                    <!-- book cover or placeholder -->
-                    {% if book.cover_image %}
-                        <img src="{{ book.cover_image.url }}"
-                             alt="Cover of {{ book.title }}"
-                             class="book-cover-img">
-                    {% else %}
-                        <!-- placeholder shown when no cover image -->
-                        <div class="book-cover-placeholder">
-                            <i class="bi bi-book" aria-hidden="true"></i>
-                        </div>
-                    {% endif %}
-
-                    <!-- book info -->
-                    <div class="book-card-body">
-                        <p class="book-category">{{ book.category.name }}</p>
-                        <h3 class="book-title">{{ book.title }}</h3>
-                        <p class="book-author">by {{ book.author }}</p>
-                        <p class="book-price">€{{ book.price }}</p>
-                        <a href="/book/{{ book.slug }}/"
-                           class="btn btn-merchant btn-sm w-100"
-                           aria-label="View {{ book.title }}">
-                            View Book
-                        </a>
-                    </div>
-
-                </div>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="section-title mb-0">Featured Books</h2>
+            <!-- left and right arrow buttons -->
+            <div class="d-flex gap-2">
+                <button class="btn btn-carousel" id="carouselPrev" aria-label="Previous books">
+                    <i class="bi bi-arrow-left" aria-hidden="true"></i>
+                </button>
+                <button class="btn btn-carousel" id="carouselNext" aria-label="Next books">
+                    <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                </button>
             </div>
-            {% empty %}
-                <div class="col-12">
-                    <p class="text-muted">No featured books yet.</p>
-                </div>
-            {% endfor %}
-
         </div>
-        <!-- end row -->
+
+        <!-- the sliding track - only 5 books visible at once -->
+        <div class="books-carousel-wrapper">
+            <div class="books-carousel-track" id="booksTrack">
+
+                {% for book in featured_books %}
+                <!-- each book card inside the carousel -->
+                <div class="carousel-book-item">
+                    <div class="book-card">
+
+                        {% if book.cover_image %}
+                            <img src="{{ book.cover_image.url }}"
+                                 alt="Cover of {{ book.title }}"
+                                 class="book-cover-img">
+                        {% else %}
+                            <div class="book-cover-placeholder">
+                                <i class="bi bi-book" aria-hidden="true"></i>
+                            </div>
+                        {% endif %}
+
+                        <div class="book-card-body">
+                            <p class="book-category">{{ book.category.name }}</p>
+                            <h3 class="book-title">{{ book.title }}</h3>
+                            <p class="book-author">by {{ book.author }}</p>
+                            <p class="book-price">€{{ book.price }}</p>
+                            <a href="/book/{{ book.slug }}/"
+                               class="btn btn-merchant btn-sm w-100"
+                               aria-label="View {{ book.title }}">
+                                View Book
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+                {% empty %}
+                    <p class="text-muted">No featured books yet.</p>
+                {% endfor %}
+
+            </div>
+        </div>
+        <!-- end carousel track -->
 
         <div class="text-center mt-4">
             <a href="/catalogue/" class="btn btn-merchant-outline btn-lg">
@@ -183,7 +192,7 @@
 
     </div>
 </section>
-<!-- end featured books -->
+<!-- end featured books carousel -->
 
 <!-- ----- WHY CHOOSE US ----- -->
 <section class="py-5" aria-label="Why choose The Book Merchant">

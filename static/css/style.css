@@ -988,3 +988,60 @@ body.dark-mode .footer-links a:hover {
     font-weight: 700;
     font-size:   0.875rem;
 }
+
+/* ----- FEATURED BOOKS CAROUSEL ----- */
+
+/* outer wrapper - hides books that are off screen */
+.books-carousel-wrapper {
+    overflow: hidden;  /* hides anything outside the visible area */
+    width:    100%;
+}
+
+/* the sliding row of books */
+/* we move this left/right with JavaScript */
+.books-carousel-track {
+    display:    flex;
+    gap:        1rem;
+    transition: transform 0.4s ease;  /* smooth sliding animation */
+}
+
+/* each individual book card inside carousel */
+.carousel-book-item {
+    /* each item takes up roughly 1/5 of the row */
+    flex:      0 0 calc(20% - 0.8rem);
+    min-width: calc(20% - 0.8rem);
+}
+
+/* arrow buttons next to the heading */
+.btn-carousel {
+    background:    var(--color-card);
+    border:        1px solid var(--color-border);
+    color:         var(--color-accent);
+    border-radius: 50%;
+    width:         40px;
+    height:        40px;
+    padding:       0;
+    font-size:     1rem;
+    transition:    all var(--transition);
+}
+.btn-carousel:hover {
+    background:  var(--color-accent);
+    color:       #fff;
+    border-color: var(--color-accent);
+}
+
+/* on tablet show 3 books at once */
+@media (max-width: 992px) {
+    .carousel-book-item {
+        flex:      0 0 calc(33.33% - 0.7rem);
+        min-width: calc(33.33% - 0.7rem);
+    }
+}
+
+/* on mobile show 2 books at once */
+@media (max-width: 576px) {
+    .carousel-book-item {
+        flex:      0 0 calc(50% - 0.5rem);
+        min-width: calc(50% - 0.5rem);
+    }
+}
