@@ -1,0 +1,189 @@
+{% extends 'base.html' %}
+
+{% block title %}Catalogue - The Book Merchant{% endblock %}
+
+{% block content %}
+
+<!-- ----- CATALOGUE PAGE ----- -->
+<div class="container py-5">
+
+    <!-- ----- page title ----- -->
+    <div class="row mb-4">
+        <div class="col">
+            <h1 class="section-title">
+                {% if selected_category %}
+                    {{ selected_category.name }}
+                {% else %}
+                    All Books
+                {% endif %}
+            </h1>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <!-- ----- LEFT SIDEBAR - category filter ----- -->
+        <div class="col-lg-3 mb-4">
+            <div class="filter-sidebar">
+
+                <!-- all categories list -->
+                <h6 class="filter-title">Categories</h6>
+                <ul class="filter-list">
+
+                    <!-- show all books link -->
+                    <li>
+                        <a href="/catalogue/"
+                           class="filter-link {% if not selected_category %}active{% endif %}">
+                            All Books
+                        </a>
+                    </li>
+
+                    <!-- loop through each category -->
+                    {% for cat in categories %}
+                    <li>
+                        <a href="/catalogue/?category={{ cat.slug }}"
+                           class="filter-link {% if selected_category.slug == cat.slug %}active{% endif %}">
+                            {{ cat.name }}
+                        </a>
+                    </li>
+                    {% endfor %}
+
+                </ul>
+
+                <!-- ----- sort options ----- -->
+                <h6 class="filter-title mt-4">Sort By</h6>
+                <ul class="filter-list">
+                    <li>
+                        <a href="?{% if selected_category %}category={{ selected_category.slug }}&{% endif %}sort=-created_at"
+                           class="filter-link {% if current_sort == '-created_at' %}active{% endif %}">
+                            Newest First
+                        </a>
+                    </li>
+                    <li>
+                        <a href="?{% if selected_category %}category={{ selected_category.slug }}&{% endif %}sort=price"
+                           class="filter-link {% if current_sort == 'price' %}active{% endif %}">
+                            Price: Low to High
+                        </a>
+                    </li>
+                    <li>
+                        <a href="?{% if selected_category %}category={{ selected_category.slug }}&{% endif %}sort=-price"
+                           class="filter-link {% if current_sort == '-price' %}active{% endif %}">
+                            Price: High to Low
+                        </a>
+                    </li>
+                    <li>
+                        <a href="?{% if selected_category %}category={{ selected_category.slug }}&{% endif %}sort=title"
+                           class="filter-link {% if current_sort == 'title' %}active{% endif %}">
+                            Title A-Z
+                        </a>
+                    </li>
+                </ul>
+
+            </div>
+            <!-- end filter sidebar -->
+        </div>
+
+        <!-- ----- RIGHT SIDE - book grid ----- -->
+        <div class="col-lg-9">
+
+            <!-- show how many books found -->
+            <p class="text-muted mb-3">
+                Showing {{ page_obj.paginator.count }} book{{ page_obj.paginator.count|pluralize }}
+            </p>
+
+            <!-- ----- book cards grid ----- -->
+            <div class="row g-4">
+                {% for book in page_obj %}
+                <div class="col-6 col-md-4 col-lg-4">
+                    <div class="book-card">
+
+                        <!-- book cover or placeholder -->
+                        {% if book.cover_image %}
+                            <img src="{{ book.cover_image.url }}"
+                                 alt="Cover of {{ book.title }}"
+                                 class="book-cover-img">
+                        {% else %}
+                            <div class="book-cover-placeholder">
+                                <i class="bi bi-book" aria-hidden="true"></i>
+                            </div>
+                        {% endif %}
+
+                        <div class="book-card-body">
+                            <!-- category label -->
+                            <p class="book-category">{{ book.category.name }}</p>
+                            <!-- book title - links to detail page -->
+                            <h3 class="book-title">
+                                <a href="/book/{{ book.slug }}/">{{ book.title }}</a>
+                            </h3>
+                            <!-- author -->
+                            <p class="book-author">by {{ book.author }}</p>
+                            <!-- price -->
+                            <p class="book-price">€{{ book.price }}</p>
+
+                            <!-- add to cart button -->
+                            <button class="btn btn-merchant btn-sm w-100 btn-add-to-cart"
+                                    data-book-id="{{ book.pk }}"
+                                    aria-label="Add {{ book.title }} to cart">
+                                <i class="bi bi-bag-plus me-1"></i>
+                                Add to Cart
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+                {% empty %}
+                    <!-- shown if no books in this category -->
+                    <div class="col-12">
+                        <div class="empty-state">
+                            <i class="bi bi-book empty-state-icon"></i>
+                            <h3>No books found</h3>
+                            <p>Try a different category or check back later.</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <!-- end book grid -->
+
+            <!-- ----- PAGINATION ----- -->
+            <!-- shows page 1, 2, 3 etc at the bottom -->
+            {% if page_obj.has_other_pages %}
+            <nav class="mt-4" aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+
+                    <!-- previous page button -->
+                    {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">
+                            Previous
+                        </a>
+                    </li>
+                    {% endif %}
+
+                    <!-- page numbers -->
+                    {% for num in page_obj.paginator.page_range %}
+                    <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+                        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                    </li>
+                    {% endfor %}
+
+                    <!-- next page button -->
+                    {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}">
+                            Next
+                        </a>
+                    </li>
+                    {% endif %}
+
+                </ul>
+            </nav>
+            {% endif %}
+            <!-- end pagination -->
+
+        </div>
+        <!-- end right side -->
+
+    </div>
+</div>
+
+{% endblock %}
