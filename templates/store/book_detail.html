@@ -1,0 +1,285 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ book.title }} - The Book Merchant{% endblock %}
+
+{% block content %}
+
+<!-- ----- BOOK DETAIL PAGE ----- -->
+<div class="container py-5">
+
+    <!-- ----- breadcrumb navigation ----- -->
+    <!-- shows user where they are: Home > Fiction > Book Title -->
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="/catalogue/">Catalogue</a></li>
+            {% if book.category %}
+            <li class="breadcrumb-item">
+                <a href="/catalogue/?category={{ book.category.slug }}">
+                    {{ book.category.name }}
+                </a>
+            </li>
+            {% endif %}
+            <li class="breadcrumb-item active" aria-current="page">
+                {{ book.title }}
+            </li>
+        </ol>
+    </nav>
+
+    <div class="row">
+
+        <!-- ----- LEFT - book cover image ----- -->
+        <div class="col-md-4 mb-4">
+            {% if book.cover_image %}
+                <img src="{{ book.cover_image.url }}"
+                     alt="Cover of {{ book.title }}"
+                     class="book-detail-cover">
+            {% else %}
+                <!-- placeholder if no cover uploaded -->
+                <div class="book-detail-placeholder">
+                    <i class="bi bi-book" aria-hidden="true"></i>
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- ----- RIGHT - book info ----- -->
+        <div class="col-md-8">
+
+            <!-- category and genre labels -->
+            <p class="book-category mb-1">
+                {{ book.category.name }}
+                {% if book.genre %} › {{ book.genre.name }}{% endif %}
+            </p>
+
+            <!-- book title -->
+            <h1 class="book-detail-title">{{ book.title }}</h1>
+
+            <!-- author -->
+            <p class="book-detail-author">by {{ book.author }}</p>
+
+            <!-- star rating display -->
+            <div class="d-flex align-items-center gap-2 mb-3">
+                <span class="detail-stars">
+                    {% for i in "12345" %}
+                        {% if forloop.counter <= book.avg_rating %}
+                            ★
+                        {% else %}
+                            ☆
+                        {% endif %}
+                    {% endfor %}
+                </span>
+                <span class="text-muted">
+                    {{ book.avg_rating }} ({{ book.review_count }} reviews)
+                </span>
+            </div>
+
+            <!-- price -->
+            <p class="book-detail-price">€{{ book.price }}</p>
+
+            <!-- stock status -->
+            {% if book.in_stock %}
+                <p class="stock-badge in-stock">
+                    <i class="bi bi-check-circle me-1"></i>
+                    In Stock ({{ book.stock }} left)
+                </p>
+            {% else %}
+                <p class="stock-badge out-of-stock">
+                    <i class="bi bi-x-circle me-1"></i>
+                    Out of Stock
+                </p>
+            {% endif %}
+
+            <!-- ----- add to cart and wishlist buttons ----- -->
+            {% if user.is_authenticated %}
+                <div class="d-flex gap-2 mt-3 flex-wrap">
+
+                    <!-- add to cart button - handled by cart.js -->
+                    <button class="btn btn-merchant btn-add-to-cart"
+                            data-book-id="{{ book.pk }}"
+                            aria-label="Add {{ book.title }} to cart"
+                            {% if not book.in_stock %}disabled{% endif %}>
+                        <i class="bi bi-bag-plus me-2"></i>
+                        {% if in_cart %}Already in Cart{% else %}Add to Cart{% endif %}
+                    </button>
+
+                    <!-- wishlist toggle button - handled by wishlist.js -->
+                    <button class="btn btn-wishlist btn-toggle-wishlist"
+                            data-book-id="{{ book.pk }}"
+                            aria-label="Add to wishlist">
+                        <i class="bi bi-heart{% if in_wishlist %}-fill{% endif %} me-2"></i>
+                        {% if in_wishlist %}Saved{% else %}Save{% endif %}
+                    </button>
+
+                </div>
+            {% else %}
+                <!-- prompt to login if not authenticated -->
+                <a href="/login/" class="btn btn-merchant mt-3" aria-label="Sign in to buy">
+                    <i class="bi bi-person me-2"></i>
+                    Sign in to Buy
+                </a>
+            {% endif %}
+
+            <!-- ----- book details table ----- -->
+            <table class="book-info-table mt-4">
+                {% if book.publisher %}
+                <tr>
+                    <td class="info-label">Publisher</td>
+                    <td>{{ book.publisher }}</td>
+                </tr>
+                {% endif %}
+                {% if book.published_year %}
+                <tr>
+                    <td class="info-label">Year</td>
+                    <td>{{ book.published_year }}</td>
+                </tr>
+                {% endif %}
+                {% if book.pages %}
+                <tr>
+                    <td class="info-label">Pages</td>
+                    <td>{{ book.pages }}</td>
+                </tr>
+                {% endif %}
+                {% if book.isbn %}
+                <tr>
+                    <td class="info-label">ISBN</td>
+                    <td>{{ book.isbn }}</td>
+                </tr>
+                {% endif %}
+                <tr>
+                    <td class="info-label">Condition</td>
+                    <td>{{ book.get_condition_display }}</td>
+                </tr>
+            </table>
+
+        </div>
+    </div>
+
+    <!-- ----- DESCRIPTION ----- -->
+    {% if book.description %}
+    <div class="row mt-4">
+        <div class="col-12">
+            <h2 class="section-title">About this Book</h2>
+            <p class="book-description">{{ book.description }}</p>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- ----- REVIEWS SECTION ----- -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <h2 class="section-title">Reviews</h2>
+
+            <!-- show existing reviews -->
+            {% if reviews %}
+                {% for review in reviews %}
+                <div class="review-card">
+
+                    <!-- reviewer name and date -->
+                    <div class="review-header">
+                        <strong>{{ review.user.username }}</strong>
+                        <span class="text-muted ms-2">
+                            {{ review.created_at|date:"d M Y" }}
+                        </span>
+                    </div>
+
+                    <!-- star rating -->
+                    <div class="review-stars">
+                        {% for i in "12345" %}
+                            {% if forloop.counter <= review.rating %}★{% else %}☆{% endif %}
+                        {% endfor %}
+                    </div>
+
+                    <!-- review title if exists -->
+                    {% if review.title %}
+                        <p class="review-title">{{ review.title }}</p>
+                    {% endif %}
+
+                    <!-- review body text -->
+                    {% if review.body %}
+                        <p class="review-body">{{ review.body }}</p>
+                    {% endif %}
+
+                </div>
+                {% endfor %}
+            {% else %}
+                <p class="text-muted">No reviews yet. Be the first to review!</p>
+            {% endif %}
+
+            <!-- ----- WRITE A REVIEW ----- -->
+            <!-- only shown to logged in users who havent reviewed yet -->
+            {% if user.is_authenticated and not user_review %}
+            <div class="review-form-container mt-4">
+                <h3>Write a Review</h3>
+
+                <!-- error message shown by JS if rating not selected -->
+                <p id="review-error" class="text-danger" style="display:none;"></p>
+
+                <!-- review form - submitted via AJAX in ratings.js -->
+                <form id="review-form" data-book-id="{{ book.pk }}">
+                    {% csrf_token %}
+
+                    <!-- ----- star rating widget ----- -->
+                    <!-- stars are clicked by user, JS sets the hidden input -->
+                    <div class="star-rating-widget mb-3">
+                        <span class="star" data-value="1" aria-label="1 star">★</span>
+                        <span class="star" data-value="2" aria-label="2 stars">★</span>
+                        <span class="star" data-value="3" aria-label="3 stars">★</span>
+                        <span class="star" data-value="4" aria-label="4 stars">★</span>
+                        <span class="star" data-value="5" aria-label="5 stars">★</span>
+                    </div>
+                    <!-- hidden input stores the selected rating number -->
+                    <input type="hidden" id="rating-input" name="rating" value="0">
+
+                    <!-- review title -->
+                    <div class="mb-3">
+                        <label for="review-title" class="form-label">
+                            Review Title (optional)
+                        </label>
+                        <input type="text"
+                               class="form-control"
+                               id="review-title"
+                               maxlength="150"
+                               placeholder="Summarise your review"
+                               aria-label="Review title">
+                    </div>
+
+                    <!-- review body -->
+                    <div class="mb-3">
+                        <label for="review-body" class="form-label">
+                            Your Review (optional)
+                        </label>
+                        <textarea class="form-control"
+                                  id="review-body"
+                                  rows="4"
+                                  maxlength="2000"
+                                  placeholder="Tell others what you thought..."
+                                  aria-label="Review text"></textarea>
+                    </div>
+
+                    <button type="submit"
+                            class="btn btn-merchant"
+                            aria-label="Submit your review">
+                        Submit Review
+                    </button>
+                </form>
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+
+    <!-- ----- RECOMMENDED BOOKS ----- -->
+    <!-- filled in by JavaScript using the recommendations API -->
+    <div class="row mt-5" id="recommendations-section">
+        <div class="col-12">
+            <h2 class="section-title">You Might Also Like</h2>
+            <!-- JS puts book cards here -->
+            <div class="row g-4" id="recommendations-container">
+                <div class="col-12 text-muted">Loading recommendations...</div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

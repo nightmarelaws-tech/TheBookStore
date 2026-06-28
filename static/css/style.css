@@ -41,7 +41,94 @@ body.dark-mode {
     --color-border: #3d2d1c;
     --color-card:   #2a1f12;
 }
+/* ----- DARK MODE GLOBAL FIX ----- */
+/* These rules fix ALL text visibility in dark mode globally */
+/* No need to fix individual pages - this covers everything */
 
+/* ----- main text and headings ----- */
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode h4,
+body.dark-mode h5,
+body.dark-mode h6,
+body.dark-mode p,
+body.dark-mode span,
+body.dark-mode li,
+body.dark-mode label {
+    color: var(--color-text);
+}
+
+/* ----- links in dark mode - gold colour so they are visible ----- */
+body.dark-mode a {
+    color: var(--color-gold);
+}
+body.dark-mode a:hover {
+    color: #fff;
+}
+/* ----- book card text in dark mode ----- */
+body.dark-mode .book-card {
+    background:   var(--color-card);
+    border-color: var(--color-border);
+}
+body.dark-mode .book-title {
+    color: var(--color-text);
+}
+body.dark-mode .book-author,
+body.dark-mode .book-category {
+    color: var(--color-muted);
+}
+
+/* ----- category cards in dark mode ----- */
+body.dark-mode .category-card {
+    background:   var(--color-card);
+    border-color: var(--color-border);
+    color:        var(--color-text);
+}
+
+/* ----- filter sidebar in dark mode ----- */
+body.dark-mode .filter-sidebar {
+    background:   var(--color-card);
+    border-color: var(--color-border);
+}
+body.dark-mode .filter-link {
+    color: var(--color-muted);
+}
+body.dark-mode .filter-link:hover {
+    background: var(--color-border);
+    color:      var(--color-text);
+}
+
+/* ----- form card in dark mode ----- */
+body.dark-mode .form-card {
+    background:   var(--color-card);
+    border-color: var(--color-border);
+}
+
+/* ----- why cards in dark mode ----- */
+body.dark-mode .why-card h3,
+body.dark-mode .why-card p {
+    color: var(--color-text);
+}
+
+/* ----- muted text in dark mode ----- */
+body.dark-mode .text-muted {
+    color: var(--color-muted) !important;
+}
+
+/* ----- Bootstrap alerts in dark mode ----- */
+body.dark-mode .alert {
+    background-color: var(--color-card);
+    border-color:     var(--color-border);
+    color:            var(--color-text);
+}
+
+/* ----- pagination in dark mode ----- */
+body.dark-mode .page-link {
+    background-color: var(--color-card);
+    border-color:     var(--color-border);
+    color:            var(--color-accent-hover);
+}
 
 /*2. BASE STYLES
    Basic reset and typography*/
@@ -70,25 +157,25 @@ a:hover {
 }
 
 
-/*
-   3. NAVBAR
-   Dark background, gold accent on hover*/
 
-/* Main navbar background */
+/* ----- navbar always stays dark regardless of dark mode ----- */
 #mainNavbar {
-    background-color: var(--color-dark);
+    background-color: #1a1209 !important;
     border-bottom:    2px solid var(--color-accent);
     padding:          0.6rem 0;
 }
 
-/* Brand/logo text */
+/* ----- navbar brand - always light colour never changes ----- */
 .navbar-brand {
     font-family: var(--font-heading);
     font-size:   1.5rem;
     font-weight: 700;
-    color:       #faf7f2 !important; /* force white on dark background */
+    color:       #faf7f2 !important;
 }
-
+/* ----- the word Merchant stays gold always ----- */
+.brand-accent {
+    color: var(--color-gold) !important;
+}
 /* The gold word "Merchant" in the logo */
 .brand-accent {
     color: var(--color-gold);
@@ -204,7 +291,7 @@ a:hover {
    Dark background matching the navbar*/
 
 #mainFooter {
-    background-color: var(--color-dark);
+    background-color: #1a1209 !important;
     border-top:       2px solid var(--color-accent);
     margin-top:       4rem;
 }
@@ -222,15 +309,28 @@ a:hover {
     font-size: 0.875rem;
 }
 
-/* Footer column headings */
+/* ----- footer headings always gold never change ----- */
 .footer-heading {
-    color:          var(--color-gold);
+    color:          var(--color-gold) !important;
     font-family:    var(--font-heading);
     font-size:      0.95rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
 }
 
+/* ----- footer links stay light colour always ----- */
+.footer-links a {
+    color:      rgba(250,247,242,0.65) !important;
+    transition: color var(--transition);
+}
+.footer-links a:hover {
+    color: var(--color-gold) !important;
+}
+
+/* ----- footer brand always gold ----- */
+.footer-brand {
+    color: var(--color-gold) !important;
+}
 /* Footer link lists - remove bullet points */
 .footer-links {
     list-style: none;
@@ -367,6 +467,31 @@ body.dark-mode .form-select {
     border-color:     var(--color-border);
     color:            var(--color-text);
 }
+/* ----- stop dark mode from turning navbar and footer text gold ----- */
+body.dark-mode .navbar-brand,
+body.dark-mode .footer-brand,
+body.dark-mode .footer-heading,
+body.dark-mode .footer-links a,
+body.dark-mode .footer-text,
+body.dark-mode .footer-copy,
+body.dark-mode .footer-link {
+    /* keep their original colours defined above */
+    color: unset;
+}
+
+/* ----- footer headings force gold in dark mode too ----- */
+body.dark-mode .footer-heading {
+    color: var(--color-gold) !important;
+}
+
+/* ----- footer links force light in dark mode ----- */
+body.dark-mode .footer-links a {
+    color: rgba(250,247,242,0.65) !important;
+}
+body.dark-mode .footer-links a:hover {
+    color: var(--color-gold) !important;
+}
+
 
 /*--------------------HOMEPAGE STYLES------------------ */
 
