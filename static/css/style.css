@@ -701,3 +701,153 @@ body.dark-mode .footer-links a:hover {
     border-color: var(--color-accent);
     box-shadow:   0 0 0 0.2rem rgba(139,69,19,0.2);
 }
+
+/* ----- BOOK DETAIL PAGE ----- */
+
+/* large cover image on detail page */
+.book-detail-cover {
+    width:         100%;
+    border-radius: var(--radius);
+    box-shadow:    0 4px 16px rgba(0,0,0,0.15);
+}
+
+/* placeholder when no cover on detail page */
+.book-detail-placeholder {
+    width:            100%;
+    height:           380px;
+    background:       linear-gradient(135deg, #c9b99a, #a08060);
+    border-radius:    var(--radius);
+    display:          flex;
+    align-items:      center;
+    justify-content:  center;
+    font-size:        6rem;
+    color:            rgba(255,255,255,0.5);
+}
+
+/* book title on detail page - bigger than card title */
+.book-detail-title {
+    font-family:   var(--font-heading);
+    font-size:     2rem;
+    font-weight:   700;
+    margin-bottom: 0.25rem;
+}
+
+/* author name on detail page */
+.book-detail-author {
+    color:         var(--color-muted);
+    font-size:     1rem;
+    margin-bottom: 0.5rem;
+}
+
+/* price on detail page - large and prominent */
+.book-detail-price {
+    font-family: var(--font-heading);
+    font-size:   1.8rem;
+    font-weight: 700;
+    color:       var(--color-accent);
+}
+
+/* star display on detail page */
+.detail-stars {
+    color:     var(--color-gold);
+    font-size: 1.2rem;
+}
+
+/* in stock / out of stock badge */
+.stock-badge {
+    font-size:   0.875rem;
+    font-weight: 600;
+}
+.in-stock {
+    color: #2d6a4f;  /* green */
+}
+.out-of-stock {
+    color: #c1121f;  /* red */
+}
+
+/* wishlist button */
+.btn-wishlist {
+    background:   transparent;
+    border:       2px solid var(--color-accent);
+    color:        var(--color-accent);
+    font-weight:  600;
+    border-radius: var(--radius);
+    transition:   all var(--transition);
+}
+.btn-wishlist:hover,
+.btn-wishlist.active {
+    background: var(--color-accent);
+    color:      #fff;
+}
+
+/* book info table (publisher, year, pages etc) */
+.book-info-table {
+    width:      100%;
+    font-size:  0.875rem;
+}
+.book-info-table tr {
+    border-bottom: 1px solid var(--color-border);
+}
+.book-info-table td {
+    padding: 0.5rem 0;
+}
+.info-label {
+    color:      var(--color-muted);
+    width:      120px;
+    font-weight: 600;
+}
+
+/* description text */
+.book-description {
+    line-height: 1.8;
+    color:       var(--color-text);
+    max-width:   700px;
+}
+
+/* ----- REVIEW CARDS ----- */
+
+/* single review card */
+.review-card {
+    background:    var(--color-card);
+    border:        1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding:       1.25rem;
+    margin-bottom: 1rem;
+}
+
+/* reviewer name and date row */
+.review-header {
+    margin-bottom: 0.25rem;
+}
+
+/* stars in a review */
+.review-stars {
+    color:         var(--color-gold);
+    font-size:     1rem;
+    margin-bottom: 0.5rem;
+}
+
+/* review title */
+.review-title {
+    font-weight:   600;
+    margin-bottom: 0.25rem;
+}
+
+/* review body text */
+.review-body {
+    color:     var(--color-muted);
+    font-size: 0.9rem;
+}
+
+/* ----- STAR RATING WIDGET ----- */
+/* the clickable stars when writing a review */
+.star-rating-widget .star {
+    font-size:  2rem;
+    color:      var(--color-border);  /* grey by default */
+    cursor:     pointer;
+    transition: color var(--transition);
+}
+.star-rating-widget .star:hover,
+.star-rating-widget .star.selected {
+    color: var(--color-gold);  /* gold when hovered or selected */
+}
