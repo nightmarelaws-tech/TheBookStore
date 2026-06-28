@@ -1,0 +1,191 @@
+{% extends 'base.html' %}
+
+{% block title %}Search - The Book Merchant{% endblock %}
+
+{% block content %}
+
+<!-- ----- SEARCH PAGE ----- -->
+<div class="container py-5">
+
+    <h1 class="section-title">
+        {% if query %}
+            Results for "{{ query }}"
+        {% else %}
+            Search Books
+        {% endif %}
+    </h1>
+
+    <div class="row">
+
+        <!-- ----- LEFT SIDEBAR - search and filters ----- -->
+        <div class="col-lg-3 mb-4">
+            <div class="filter-sidebar">
+
+                <!-- ----- search bar ----- -->
+                <h6 class="filter-title">Search</h6>
+                <form method="GET" action="/search/">
+
+                    <!-- keyword search input -->
+                    <input type="text"
+                           class="form-control mb-3"
+                           name="q"
+                           value="{{ query }}"
+                           placeholder="Title, author, ISBN..."
+                           maxlength="200"
+                           aria-label="Search books">
+
+                    <!-- ----- advanced filters ----- -->
+                    <h6 class="filter-title mt-3">Category</h6>
+                    <select name="category" class="form-select mb-3" aria-label="Filter by category">
+                        <option value="">All Categories</option>
+                        {% for cat in categories %}
+                            <option value="{{ cat.slug }}"
+                                {% if filter_cat == cat.slug %}selected{% endif %}>
+                                {{ cat.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+
+                    <!-- ----- price range ----- -->
+                    <h6 class="filter-title">Price Range</h6>
+                    <div class="d-flex gap-2 mb-3">
+                        <!-- min price -->
+                        <input type="number"
+                               class="form-control"
+                               name="min_price"
+                               value="{{ filter_min }}"
+                               placeholder="Min €"
+                               min="0"
+                               maxlength="6"
+                               aria-label="Minimum price">
+                        <!-- max price -->
+                        <input type="number"
+                               class="form-control"
+                               name="max_price"
+                               value="{{ filter_max }}"
+                               placeholder="Max €"
+                               min="0"
+                               maxlength="6"
+                               aria-label="Maximum price">
+                    </div>
+
+                    <!-- ----- condition filter ----- -->
+                    <h6 class="filter-title">Condition</h6>
+                    <select name="condition" class="form-select mb-3" aria-label="Filter by condition">
+                        <option value="">Any Condition</option>
+                        <option value="new"  {% if filter_condition == 'new'  %}selected{% endif %}>New</option>
+                        <option value="used" {% if filter_condition == 'used' %}selected{% endif %}>Used - Good</option>
+                        <option value="rare" {% if filter_condition == 'rare' %}selected{% endif %}>Rare / Collectors</option>
+                    </select>
+
+                    <!-- search button -->
+                    <button type="submit"
+                            class="btn btn-merchant w-100"
+                            aria-label="Apply filters">
+                        <i class="bi bi-search me-2"></i>
+                        Search
+                    </button>
+
+                    <!-- clear filters link -->
+                    <a href="/search/" class="btn btn-outline-secondary w-100 mt-2">
+                        Clear Filters
+                    </a>
+
+                </form>
+
+            </div>
+        </div>
+        <!-- end sidebar -->
+
+        <!-- ----- RIGHT SIDE - results ----- -->
+        <div class="col-lg-9">
+
+            <!-- results count -->
+            <p class="text-muted mb-3">
+                {{ page_obj.paginator.count }} book{{ page_obj.paginator.count|pluralize }} found
+            </p>
+
+            <!-- ----- book grid ----- -->
+            <div class="row g-4">
+                {% for book in page_obj %}
+                <div class="col-6 col-md-4">
+                    <div class="book-card">
+
+                        <!-- cover or placeholder -->
+                        {% if book.cover_image %}
+                            <img src="{{ book.cover_image.url }}"
+                                 alt="Cover of {{ book.title }}"
+                                 class="book-cover-img">
+                        {% else %}
+                            <div class="book-cover-placeholder">
+                                <i class="bi bi-book" aria-hidden="true"></i>
+                            </div>
+                        {% endif %}
+
+                        <div class="book-card-body">
+                            <p class="book-category">{{ book.category.name }}</p>
+                            <h3 class="book-title">
+                                <a href="/book/{{ book.slug }}/">{{ book.title }}</a>
+                            </h3>
+                            <p class="book-author">by {{ book.author }}</p>
+                            <p class="book-price">€{{ book.price }}</p>
+                            <button class="btn btn-merchant btn-sm w-100 btn-add-to-cart"
+                                    data-book-id="{{ book.pk }}"
+                                    aria-label="Add {{ book.title }} to cart">
+                                <i class="bi bi-bag-plus me-1"></i>
+                                Add to Cart
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+                {% empty %}
+                    <!-- shown when no results found -->
+                    <div class="col-12">
+                        <div class="empty-state">
+                            <i class="bi bi-search empty-state-icon"></i>
+                            <h3>No books found</h3>
+                            <p>Try different keywords or remove some filters.</p>
+                            <a href="/search/" class="btn btn-merchant mt-2">
+                                Clear Search
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <!-- end book grid -->
+
+            <!-- ----- pagination ----- -->
+            {% if page_obj.has_other_pages %}
+            <nav class="mt-4" aria-label="Search results pages">
+                <ul class="pagination justify-content-center">
+                    {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?q={{ query }}&page={{ page_obj.previous_page_number }}">
+                            Previous
+                        </a>
+                    </li>
+                    {% endif %}
+                    {% for num in page_obj.paginator.page_range %}
+                    <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+                        <a class="page-link" href="?q={{ query }}&page={{ num }}">{{ num }}</a>
+                    </li>
+                    {% endfor %}
+                    {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?q={{ query }}&page={{ page_obj.next_page_number }}">
+                            Next
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% endif %}
+
+        </div>
+        <!-- end right side -->
+
+    </div>
+</div>
+
+{% endblock %}

@@ -127,49 +127,63 @@
 
 
 <!-- ----- FEATURED BOOKS ----- -->
-<!-- ----- FEATURED BOOKS LOOP -----  -->
-<!-- Django loops through each book from the database -->
-{% for book in featured_books %}
-    <div class="col-6 col-md-4 col-lg-3">
-        <div class="book-card">
+<section class="py-5 bg-light-warm" aria-label="Featured books">
+    <div class="container">
 
-            <!-- Show cover image if exists, otherwise show placeholder -->
-            {% if book.cover_image %}
-                <img src="{{ book.cover_image.url }}"
-                     alt="Cover of {{ book.title }}"
-                     class="book-cover-img">
-            {% else %}
-                <!-- Placeholder shown when no cover image uploaded -->
-                <div class="book-cover-placeholder">
-                    <i class="bi bi-book" aria-hidden="true"></i>
+        <h2 class="section-title">Featured Books</h2>
+
+        <!-- row div is required for Bootstrap grid to work side by side -->
+        <div class="row g-4">
+
+            {% for book in featured_books %}
+            <div class="col-6 col-md-4 col-lg-3">
+                <div class="book-card">
+
+                    <!-- book cover or placeholder -->
+                    {% if book.cover_image %}
+                        <img src="{{ book.cover_image.url }}"
+                             alt="Cover of {{ book.title }}"
+                             class="book-cover-img">
+                    {% else %}
+                        <!-- placeholder shown when no cover image -->
+                        <div class="book-cover-placeholder">
+                            <i class="bi bi-book" aria-hidden="true"></i>
+                        </div>
+                    {% endif %}
+
+                    <!-- book info -->
+                    <div class="book-card-body">
+                        <p class="book-category">{{ book.category.name }}</p>
+                        <h3 class="book-title">{{ book.title }}</h3>
+                        <p class="book-author">by {{ book.author }}</p>
+                        <p class="book-price">€{{ book.price }}</p>
+                        <a href="/book/{{ book.slug }}/"
+                           class="btn btn-merchant btn-sm w-100"
+                           aria-label="View {{ book.title }}">
+                            View Book
+                        </a>
+                    </div>
+
                 </div>
-            {% endif %}
-
-            <div class="book-card-body">
-                <!-- Category name above title -->
-                <p class="book-category">{{ book.category.name }}</p>
-                <!-- Book title -->
-                <h3 class="book-title">{{ book.title }}</h3>
-                <!-- Author name -->
-                <p class="book-author">by {{ book.author }}</p>
-                <!-- Price in euros -->
-                <p class="book-price">€{{ book.price }}</p>
-                <a href="/book/{{ book.slug }}/"
-                   class="btn btn-merchant btn-sm w-100"
-                   aria-label="View {{ book.title }}">
-                    View Book
-                </a>
             </div>
+            {% empty %}
+                <div class="col-12">
+                    <p class="text-muted">No featured books yet.</p>
+                </div>
+            {% endfor %}
 
         </div>
-    </div>
-{% empty %}
-    <!-- This shows if no featured books exist in database yet -->
-    <div class="col-12">
-        <p class="text-muted">No featured books yet. Add some in the admin panel!</p>
-    </div>
-{% endfor %}
+        <!-- end row -->
 
+        <div class="text-center mt-4">
+            <a href="/catalogue/" class="btn btn-merchant-outline btn-lg">
+                View All Books
+            </a>
+        </div>
+
+    </div>
+</section>
+<!-- end featured books -->
 
 <!-- ----- WHY CHOOSE US ----- -->
 <section class="py-5" aria-label="Why choose The Book Merchant">
