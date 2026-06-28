@@ -127,6 +127,20 @@ class Book(models.Model):
     @property
     def in_stock(self):
         return self.stock > 0
+    # calculate average star rating from all reviews
+    @property
+    def avg_rating(self):
+        reviews = self.reviews.all()
+        if not reviews:
+            return 0
+        return round(sum(r.rating for r in reviews) / len(reviews), 1)
+
+    # count total number of reviews
+    @property
+    def review_count(self):
+        return self.reviews.count()
+    
+    
 
 
 # ----- USER PROFILE TABLE -----
