@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block title %}My Wishlist - The Book Merchant{% endblock %}
+
+{% block content %}
+
+<!-- ----- WISHLIST PAGE ----- -->
+<div class="container py-5">
+
+    <h1 class="section-title">My Wishlist</h1>
+
+    {% if items %}
+    <div class="row g-4">
+
+        {% for item in items %}
+        <div class="col-6 col-md-4 col-lg-3" id="wishlist-item-{{ item.book.pk }}">
+            <div class="book-card">
+
+                <!-- book cover or placeholder -->
+                {% if item.book.cover_image %}
+                    <img src="{{ item.book.cover_image.url }}"
+                         alt="Cover of {{ item.book.title }}"
+                         class="book-cover-img">
+                {% else %}
+                    <div class="book-cover-placeholder">
+                        <i class="bi bi-book" aria-hidden="true"></i>
+                    </div>
+                {% endif %}
+
+                <div class="book-card-body">
+                    <p class="book-category">{{ item.book.category.name }}</p>
+                    <h3 class="book-title">
+                        <a href="/book/{{ item.book.slug }}/">{{ item.book.title }}</a>
+                    </h3>
+                    <p class="book-author">by {{ item.book.author }}</p>
+                    <p class="book-price">€{{ item.book.price }}</p>
+
+                    <!-- add to cart button -->
+                    <button class="btn btn-merchant btn-sm w-100 mb-2 btn-add-to-cart"
+                            data-book-id="{{ item.book.pk }}"
+                            aria-label="Add {{ item.book.title }} to cart">
+                        <i class="bi bi-bag-plus me-1"></i>
+                        Add to Cart
+                    </button>
+
+                    <!-- remove from wishlist button -->
+                    <button class="btn btn-outline-danger btn-sm w-100 btn-remove-wishlist"
+                            data-book-id="{{ item.book.pk }}"
+                            aria-label="Remove {{ item.book.title }} from wishlist">
+                        <i class="bi bi-heart-fill me-1"></i>
+                        Remove
+                    </button>
+
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+
+    {% else %}
+    <!-- shown when wishlist is empty -->
+    <div class="empty-state">
+        <i class="bi bi-heart empty-state-icon" aria-hidden="true"></i>
+        <h3>Your wishlist is empty</h3>
+        <p>Save books you love by clicking the heart icon on any book!</p>
+        <a href="/catalogue/" class="btn btn-merchant mt-2" aria-label="Browse books">
+            Browse Books
+        </a>
+    </div>
+    {% endif %}
+
+</div>
+
+{% endblock %}
